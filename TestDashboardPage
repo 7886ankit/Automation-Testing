@@ -1,0 +1,263 @@
+package com.mavenproject;
+
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+
+
+public class TestDashboardPage {
+	String projectUrl="https://test-nf.com/english.html";
+	WebDriver driver;
+	//Create Xpath for home ,football,basketball,cricket,cibersport tabs
+	
+	@FindBy(xpath = "//*[text()='Home']")
+	WebElement AvailableHomeTab;
+	
+	@FindBy(xpath = "//*[text()='Football']")
+    WebElement AvailableFootballTab;
+
+	@FindBy(xpath = "//*[text()='Busketball']")
+	WebElement AvailableBasketballTab;
+	
+	@FindBy(xpath = "//*[text()='Kriket']")
+	WebElement AvailableCricketTab;
+	
+	@FindBy(xpath = "//*[text()='Cibersport']")
+	WebElement AvailableCiberSportTab;
+	
+	
+}
+
+#### New Class ####
+
+
+package com.mavenproject;
+
+import java.io.FileOutputStream;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+
+public class TestClass extends TestDashboardPage {
+	WebDriver driver = WebDriverManager.chromedriver().create();
+	SoftAssert sa = new SoftAssert();
+	TestDashboardPage pageObj = PageFactory.initElements(driver, TestDashboardPage.class);
+	WebDriverWait ww = new WebDriverWait(driver, 60);
+
+	@BeforeClass
+	public void LaunchBrowser() {
+		// driver = WebDriverManager.chromedriver().create();
+		driver.get(projectUrl);
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
+	}
+
+	@AfterClass
+	public void closeLink() {
+		driver.quit();
+	}
+
+	@Test(priority = 1)
+
+	public void getUrlLink() {
+
+		// Creating page object
+		TestDashboardPage pageObj = PageFactory.initElements(driver, TestDashboardPage.class);
+
+		// Verify the availability of each tab(Home, Cricket, Football, Basketball and
+		// Ciber Sports)
+
+		boolean Hometabresult = pageObj.AvailableHomeTab.isDisplayed();
+		try {
+			sa.assertEquals(Hometabresult, true);
+		} catch (AssertionError e) {
+
+			System.out.println("Home Tab is not available");
+			throw e;
+		}
+		System.out.println("Home Tab is available");
+
+		// verify football tab is available
+		boolean Footballtabresult = pageObj.AvailableFootballTab.isDisplayed();
+		try {
+			sa.assertEquals(Footballtabresult, true);
+		} catch (AssertionError e) {
+
+			System.out.println("Football Tab is not available");
+			throw e;
+		}
+		System.out.println("Football Tab is available");
+
+		// verify Basketball tab is available
+		boolean Basketballtabresult = pageObj.AvailableBasketballTab.isDisplayed();
+		try {
+			sa.assertEquals(Basketballtabresult, true);
+
+		} catch (AssertionError e) {
+
+			System.out.println("Basketball Tab is not available");
+			throw e;
+		}
+		System.out.println("Basketball Tab is available");
+
+		// verify Cricket tab is available
+		boolean Crickettabresult = pageObj.AvailableCricketTab.isDisplayed();
+		try {
+			sa.assertEquals(Crickettabresult, true);
+		} catch (AssertionError e) {
+
+			System.out.println("Cricket Tab is not available");
+			throw e;
+		}
+		System.out.println("Cricket Tab is available");
+
+		// verify ciber sport tab is available
+
+		boolean Cibersporttabresult = pageObj.AvailableCiberSportTab.isDisplayed();
+		try {
+			sa.assertEquals(Cibersporttabresult, true);
+		} catch (AssertionError e) {
+
+			System.out.println("Cibersport Tab is not available");
+			throw e;
+		}
+		System.out.println("Cibersport Tab is available");
+
+		sa.assertAll();
+
+	}
+
+	/*
+	 * @Test(priority = 2) public void Homeurlverify() throws Exception {
+	 * 
+	 * // Verify URL home tab contains tab name i.e. home
+	 * pageObj.AvailableHomeTab.click(); String Homeurl = driver.getCurrentUrl();
+	 * String Hometext = pageObj.AvailableHomeTab.getText(); try {
+	 * sa.assertEquals(Homeurl.contains(Hometext.toLowerCase()), true); } catch
+	 * (AssertionError e) { System.out.println("Home tab not contain in url"); }
+	 * System.out.println("Home tab contain in url"); sa.assertAll(); }
+	 */
+
+	// Verify each url URL contains tab name
+
+	@Test(priority = 3)
+	public void football() throws Exception {
+		pageObj.AvailableFootballTab.click();
+		String footballurl = driver.getCurrentUrl();
+		Thread.sleep(1000);
+		String footbaltext = pageObj.AvailableFootballTab.getText();
+		try {
+			sa.assertEquals(footballurl.contains(footbaltext.toLowerCase()), true);
+
+		} catch (AssertionError e) {
+			System.out.println("Football tab not contain in url");
+		}
+		System.out.println("Football tab contain in url");
+		sa.assertAll();
+	}
+
+	@Test(priority = 4)
+	public void Basketball() throws Exception {
+		pageObj.AvailableBasketballTab.click();
+		String Basketballurl = driver.getCurrentUrl();
+		Thread.sleep(1000);
+		String basketballText = pageObj.AvailableBasketballTab.getText();
+
+		try {
+			sa.assertEquals(Basketballurl.contains(basketballText.toLowerCase()), true);
+
+			System.out.println("Basketball tab contain in url");
+		} catch (AssertionError e) {
+			System.out.println("Basketball tab not contain in url");
+		}
+		sa.assertAll();
+	}
+
+	@Test(priority = 5)
+	public void Cricket() throws Exception {
+		pageObj.AvailableCricketTab.click();
+		String Cricketurl = driver.getCurrentUrl();
+		Thread.sleep(1000);
+		String CricketText = pageObj.AvailableCricketTab.getText();
+
+		try {
+			sa.assertEquals(Cricketurl.contains(CricketText.toLowerCase()), true);
+
+			System.out.println("Kriket tab contain in url");
+		} catch (AssertionError e) {
+			System.out.println("kriket tab not contain in url");
+		}
+		sa.assertAll();
+
+	}
+
+	@Test(priority = 6)
+	public void Cibersport() throws Exception {
+		pageObj.AvailableCiberSportTab.click();
+		String Cibersporturl = driver.getCurrentUrl();
+		Thread.sleep(1000);
+		String CibersportText = pageObj.AvailableCiberSportTab.getText();
+
+		try {
+			sa.assertEquals(Cibersporturl.contains(CibersportText.toLowerCase()), true);
+
+			System.out.println("Cibersport tab contain in url");
+		} catch (AssertionError e) {
+			System.out.println("Cibersport tab not contain in url");
+		}
+		sa.assertAll();
+	}
+
+	@Test(priority = 7)
+	public void Exceldata() throws Exception {
+		FileOutputStream fo = new FileOutputStream("C:\\Users\\Ankit Gupta\\Desktop\\AnkitFynd\\Book1.xls");
+		WritableWorkbook wb = Workbook.createWorkbook(fo);
+		WritableSheet ws = wb.createSheet("Sheet", 1);
+
+		// Store the link in excel sheet
+
+		pageObj.AvailableHomeTab.click();
+		String Homeurl = driver.getCurrentUrl();
+		Label l1 = new Label(0, 1, Homeurl);
+
+		pageObj.AvailableFootballTab.click();
+		String footballballurl = driver.getCurrentUrl();
+		Label l2 = new Label(0, 2, footballballurl);
+
+		pageObj.AvailableBasketballTab.click();
+		String basketballurl = driver.getCurrentUrl();
+		Label l3 = new Label(0, 3, basketballurl);
+
+		pageObj.AvailableCricketTab.click();
+		String cricketurl = driver.getCurrentUrl();
+		Label l4 = new Label(0, 4, cricketurl);
+
+		pageObj.AvailableCiberSportTab.click();
+		String cibersport = driver.getCurrentUrl();
+		Label l5 = new Label(0, 5, cibersport);
+
+		// Add the data in cell
+		ws.addCell(l1);
+		ws.addCell(l2);
+		ws.addCell(l3);
+		ws.addCell(l4);
+		ws.addCell(l5);
+
+		wb.write();
+		wb.close();
+	}
+
+}
